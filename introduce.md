@@ -17,7 +17,7 @@
 ## 分配 (allocation)
   <div style="text-align:center">
 
-  ![前端与中央空闲列表](overview.gif)
+  ![](https://tcmalloc.cn/overview.gif)
 
   </div>
 
