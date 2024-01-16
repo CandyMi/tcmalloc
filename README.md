@@ -16,9 +16,9 @@
 
 # 文档
 
-  * [完整介绍(英文)](https://gperftools.github.io/gperftools/tcmalloc.html)
+  * [基本介绍(中文)](introduce.md)
 
-  * [更新说明(英文)](https://raw.githubusercontent.com/gperftools/gperftools/master/NEWS)
+  * [高级配置(中文)](configure.md)
 
   * [安装方法(中文)](build.md)
 
