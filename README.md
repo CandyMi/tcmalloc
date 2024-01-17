@@ -1,8 +1,7 @@
-# TCMalloc : Thread-Caching Malloc
 
-  `tcmalloc` 是 `Google` 对 `C` 的 `malloc()` 和 `C++` 的 `operator new` 运算符的定制实现，用于替换 `C` 和 `C++` 代码中默认的分配内存接口。 
+  `tcmalloc` 全称为 : **Thread-Caching Malloc** - 性能分析工具库 [perftools](https://github.com/gperftools/gperftools) 的一部分, 由`Google`公司开发用于替换 `C` 和 `C++` 代码中默认的分配内存接口. 
   
-  `tcmalloc` 最初是为多线程而构建的, 且也比`libc`的实现在实际的应用场景中更高效。
+  `tcmalloc` 作为一个知名项目, 已经是[Golang](https://go.dev/)、[MongoDB](https://www.mongodb.com/)的默认内存分配器, 在[MySQL](https://www.mysql.com/)、[Redis](https://redis.io/)、[Nginx](https://nginx.org)等项目中可选. 为多线程而生的它比标准`libc`的实现更高效.
 
 # 优势
 
