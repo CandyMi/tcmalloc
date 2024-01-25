@@ -15,13 +15,15 @@
 
 # 文档
 
-  * [基本介绍(中文)](introduce.md)
+  * [基本介绍](introduce.md)
 
-  * [高级配置(中文)](configure.md)
+  * [高级配置](configure.md)
 
-  * [安装方法(中文)](build.md)
+  * [安装方法](build.md)
 
-  * [性能指标(中文)](performance.md)
+  * [性能指标](performance.md)
+
+  * [常见答疑](faq.md)
 
 # 许可
 
