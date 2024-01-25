@@ -1,5 +1,2 @@
 User-agent: *
-  Allow: /introduce.html
-  Allow: /configure.html
-  Allow: /build.html
-  Allow: /performance.html
+Allow: /
