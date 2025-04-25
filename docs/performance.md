@@ -4,7 +4,7 @@
 
   `tcmalloc` 与 `ptmalloc2` 的几个不同的性能指标可以从下图中看出优劣:
 
-  ![对比图1](https://tcmalloc.cn/pt2vstc2.png)
+  ![对比图1](/pt2vstc2.png)
 
   * 在绝大多数情况下， `tcmalloc` 比 `ptmalloc2` 更快，特别是对于小分配。 因为在 `tcmalloc` 内， 线程之间的争用不是什么问题.
 
@@ -19,6 +19,6 @@
 
   每秒 `CPU` 时间的操作数（百万次）与线程数，最大分配大小在 `64` Bytes - `128` Kbytes 之间:
 
-  ![对比图2](https://tcmalloc.cn/pt2vstc22.png)
+  ![对比图2](/pt2vstc22.png)
 
   在这里可以再次看到 `tcmalloc` 比 `ptmalloc` 更一致、更高效。 对于最大分配大小 `<32K`， `tcmalloc` 通常可以在大量线程的情况下实现大约 `250`万次每秒的`CPU`操作时间，而 `ptmalloc2` 通常只能实现 `50`万-`100`万次每秒的 `CPU` 操作时间，很多`libc`实现了小于这个数字。 超过 `32K` 最大分配大小时，`tcmalloc` 的 `CPU` 时间会下降到每秒`100`万-`150`万次操作，而对于大量线程的`ptmalloc2`几乎下降到零（即，使用 `ptmalloc2`，大量的 `CPU` 时间被消耗在等待大量线程的锁上）多线程情况）。
