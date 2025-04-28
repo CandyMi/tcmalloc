@@ -26,6 +26,10 @@
 
 # 应用测试
 
+## PerconaDB
+  原文在这里
+  * [MySQL（或 percona）内存使用情况 I](https://blog.herecura.eu/blog/2020-04-23-mysql-memory-usage/)
+  * [MySQL（或 percona）内存使用情况 II](https://blog.herecura.eu/blog/2020-05-12-mysql-memory-usage-in-real-life/)
 
 ## MariaDB
 
@@ -36,7 +40,7 @@
   |分配速度 |优秀 |优秀|
   |内存消耗 |略高 |较低|
 
-  此基准测试来源于[这里](https://www.managedserver.eu/Improve-mysql-and-mariadb-performance-with-memory-allocators-like-jemalloc-and-tcmalloc/)
+  此基准测试来源于[这里](https://www.managedserver.eu/Improve-mysql-and-mariadb-performance-with-memory-allocators-like-jemalloc-and-tcmalloc/), 不过目前推荐用[这里](https://mariadb.com/kb/en/using-mariadb-with-tcmalloc-or-jemalloc/)提到的方式来设置.
   
   可以明显看出在不同的负载场景和硬件配置下，jemalloc、tcMalloc 和 glibc malloc 之间存在较为明显的性能差异。
 
@@ -44,7 +48,7 @@
 
   * 4 个 vCPU：在有限的核心数量情况下，分配器的性能几乎相同，平均吞吐量约为 2500 TPS（每秒事务数）。
   * 8 个 vCPU：Jemalloc 和 TCMalloc 的吞吐量翻了一番，达到了 5000 TPS，而 glibc malloc 在线程数达到 64-128 时，吞吐量显著下降至 3500 TPS。
-  * 16 个 vCPU：Jemalloc 和 TCMalloc 在线程数达到 4096 时，吞吐量保持稳定增长，最高可达 6300 TPS。相反，glibc malloc 在线程数超过 16 之后，吞吐量急剧下降，稳定在 4000 TPS 左右。
+  * 16 个 vCPU：Jemalloc 和 TCMalloc 在线程数达到 4096 时，吞吐量保持稳定增长且达到 6300 TPS。相反 glibc malloc 在线程数超过 16 后吞吐量急剧下降，稳定在 4000 TPS 左右。
   * 32 个 vCPU：Jemalloc 和 TCMalloc 表现出显著的提升，峰值达到 12500 TPS，并且在线程数达到 1024 时仍保持高性能，超过此阈值后略有下降。相反，Glibc malloc 的性能却急剧下降，TPS 低于 8 和 16 个 vCPU 测试的水平，稳定在 3100 TPS 左右。
 
-  简而言之，在 32 个 vCPU 的服务器上进行的 OLTP_RO（只读在线事务处理）测试中，glibc malloc 与 Jemalloc/TCMalloc 之间的性能差异约为 4 倍，而高级分配器则更胜一筹。这凸显了随着并发核心和线程数量的增加，Jemalloc 和 TCMalloc 如何确保更稳定、更可扩展的性能，从而显著减少 glibc malloc 低效内存分配造成的瓶颈。
+  简而言之，在 32 个 vCPU 的服务器上进行的 OLTP_RO（只读在线事务处理）测试中，glibc malloc 与 Jemalloc/TCMalloc 之间的性能差异约为 4 倍。这凸显了随着并发核心和线程数量的增加，Jemalloc 和 TCMalloc 如何确保更稳定、更可扩展的性能，从而显著减少 glibc malloc 低效内存分配造成的瓶颈。
