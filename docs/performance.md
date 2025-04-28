@@ -27,8 +27,19 @@
 # 应用测试
 
 ## PerconaDB
-  原文在这里
+
+  [对比图3](/pt_tc_je.png)
+
+```
+注意：这里使用的 percona 构建是自定义的，但我们在 CentOS 上运行上游构建的结果与此类似。
+```
+
+  在本次测试中，tcmalloc 无疑是赢家。它的性能相当不错，但内存占用却是三者中最低的，这一点毋庸置疑。由于我们正在寻找降低内存占用的方法，因此必须将 tcmalloc 与 mysql 进行实际数据库测试，看看它是否有效。结果非常令人期待。
+
+  原文在这里：
+
   * [MySQL（或 percona）内存使用情况 I](https://blog.herecura.eu/blog/2020-04-23-mysql-memory-usage/)
+
   * [MySQL（或 percona）内存使用情况 II](https://blog.herecura.eu/blog/2020-05-12-mysql-memory-usage-in-real-life/)
 
 ## MariaDB
@@ -44,7 +55,7 @@
   
   可以明显看出在不同的负载场景和硬件配置下，jemalloc、tcMalloc 和 glibc malloc 之间存在较为明显的性能差异。
 
-  ![对比图2](/je_tc_pt.png)
+  ![对比图4](/je_tc_pt.png)
 
   * 4 个 vCPU：在有限的核心数量情况下，分配器的性能几乎相同，平均吞吐量约为 2500 TPS（每秒事务数）。
   * 8 个 vCPU：Jemalloc 和 TCMalloc 的吞吐量翻了一番，达到了 5000 TPS，而 glibc malloc 在线程数达到 64-128 时，吞吐量显著下降至 3500 TPS。
