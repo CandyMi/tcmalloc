@@ -28,9 +28,11 @@
 
 ## PerconaDB
 
-  优化之前：
+  *优化之前*：
 
-  ![之前的负载](/percona_before.png)
+  ![之前的负载](/percona-before.png)
+
+  *内存利用率*：
 
   ![GLIBC](/pt_in_pro.png)
 
@@ -38,7 +40,7 @@
 
   ![TCMALLOC](/tc_in_pro.png)
 
-  数据对比
+  *数据对比*：
 
   ![对比图3](/pt_tc_je.png)
 
