@@ -28,7 +28,19 @@
 
 ## PerconaDB
 
-  [对比图3](/pt_tc_je.png)
+  优化之前：
+
+  ![之前的负载](/percona_before.png)
+
+  ![GLIBC](/pt_in_pro.png)
+
+  ![JEMALLOC](/je_in_pro.png)
+
+  ![TCMALLOC](/tc_in_pro.png)
+
+  数据对比
+
+  ![对比图3](/pt_tc_je.png)
 
 ```
 注意：这里使用的 percona 构建是自定义的，但我们在 CentOS 上运行上游构建的结果与此类似。
