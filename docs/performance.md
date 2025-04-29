@@ -26,35 +26,6 @@
 
 # 应用测试
 
-## PerconaDB
-
-  *优化之前*：
-
-  ![之前的负载](/percona-before.png)
-
-  *内存利用率*：
-
-  ![GLIBC](/pt_in_pro.png)
-
-  ![JEMALLOC](/je_in_pro.png)
-
-  ![TCMALLOC](/tc_in_pro.png)
-
-  *数据对比*：
-
-  ![对比图3](/pt_tc_je.png)
-
-```
-注意：这里使用的 percona 构建是自定义的，但我们在 CentOS 上运行上游构建的结果与此类似。
-```
-
-  在本次测试中，tcmalloc 无疑是赢家。它的性能相当不错，但内存占用却是三者中最低的，这一点毋庸置疑。由于我们正在寻找降低内存占用的方法，因此必须将 tcmalloc 与 mysql 进行实际数据库测试，看看它是否有效。结果非常令人期待。
-
-  原文在这里：
-
-  * [MySQL（或 percona）内存使用情况 I](https://blog.herecura.eu/blog/2020-04-23-mysql-memory-usage/)
-
-  * [MySQL（或 percona）内存使用情况 II](https://blog.herecura.eu/blog/2020-05-12-mysql-memory-usage-in-real-life/)
 
 ## MariaDB
 
@@ -74,6 +45,53 @@
   * 4 个 vCPU：在有限的核心数量情况下，分配器的性能几乎相同，平均吞吐量约为 2500 TPS（每秒事务数）。
   * 8 个 vCPU：Jemalloc 和 TCMalloc 的吞吐量翻了一番，达到了 5000 TPS，而 glibc malloc 在线程数达到 64-128 时，吞吐量显著下降至 3500 TPS。
   * 16 个 vCPU：Jemalloc 和 TCMalloc 在线程数达到 4096 时，吞吐量保持稳定增长且达到 6300 TPS。相反 glibc malloc 在线程数超过 16 后吞吐量急剧下降，稳定在 4000 TPS 左右。
+
+## PerconaDB
+
+  *优化之前*：
+
+  ![之前的负载](/percona-before.png)
+
+  *jemalloc 在生产环境中的表现*：
+
+```
+一开始使用 jemalloc 还不错，但后来内存使用量开始出现严重的峰值。这些峰值非常高而且难以预测，所以决定重新使用 glibc。
+```  
+
+  ![JEMALLOC](/je_in_pro.png)
+
+  *Glibc malloc 在生产环境中的表现*：
+
+```
+之后为这台机器添加了大量的额外内存，使用 glibc 因此不再是问题。我们看到的趋势：系统内存使用量呈上升曲线，然后就是稳步增长。
+```
+
+  ![GLIBC](/pt_in_pro.png)
+  
+  *tcmalloc 在生产环境中的表现*：
+
+```
+在某次备份运行后，我们发现内存使用量已达到上限，并且一直保持在这个水平。使用 tcmalloc 和 mysql 后，内存使用量稳定得令人难以置信。
+```
+
+  ![TCMALLOC](/tc_in_pro.png)
+
+  *数据对比*：
+
+  ![对比图3](/pt_tc_je.png)
+
+```
+注意：这里使用的 percona 构建是自定义的，但我们在 CentOS 上运行上游构建的结果与此类似。
+```
+
+  在本次测试中，tcmalloc 无疑是赢家。它的性能相当不错，但内存占用却是三者中最低的，这一点毋庸置疑。由于我们正在寻找降低内存占用的方法，因此必须将 tcmalloc 与 mysql 进行实际数据库测试，看看它是否有效。结果非常令人期待。
+
+  原文在这里：
+
+  * [MySQL（或 percona）内存使用情况 I](https://blog.herecura.eu/blog/2020-04-23-mysql-memory-usage/)
+
+  * [MySQL（或 percona）内存使用情况 II](https://blog.herecura.eu/blog/2020-05-12-mysql-memory-usage-in-real-life/)
+
   * 32 个 vCPU：Jemalloc 和 TCMalloc 表现出显著的提升，峰值达到 12500 TPS，并且在线程数达到 1024 时仍保持高性能，超过此阈值后略有下降。相反，Glibc malloc 的性能却急剧下降，TPS 低于 8 和 16 个 vCPU 测试的水平，稳定在 3100 TPS 左右。
 
   简而言之，在 32 个 vCPU 的服务器上进行的 OLTP_RO（只读在线事务处理）测试中，glibc malloc 与 Jemalloc/TCMalloc 之间的性能差异约为 4 倍。这凸显了随着并发核心和线程数量的增加，Jemalloc 和 TCMalloc 如何确保更稳定、更可扩展的性能，从而显著减少 glibc malloc 低效内存分配造成的瓶颈。
